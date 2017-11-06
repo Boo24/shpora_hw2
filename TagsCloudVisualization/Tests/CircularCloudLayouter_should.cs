@@ -59,13 +59,13 @@ namespace TagsCloudVisualization
         public void FilledSpaceIsMoreThan70Percent()
         {
             var rnd = new Random();
-            for (var i = 0; i <= 5000; i++)
-                layouter.PutNextRectangle(new Size(rnd.Next(70), rnd.Next(35)));
+            for (var i = 0; i <= 2000; i++)
+                layouter.PutNextRectangle(new Size(20, 10));
             var imageComp = RectanglesRender.Render(layouter.Items.ToList(), layouter.Center);
             var totalArea = Math.Pow(imageComp.Size.Height, 2) * Math.PI/4;
             var filledArea = imageComp.Items.Select(x => x.Size.Height * x.Size.Width).Sum();
             var percentageOfFill = filledArea / totalArea*100;
-            (percentageOfFill).Should().BeGreaterOrEqualTo(70);
+            (percentageOfFill).Should().BeGreaterOrEqualTo(80);
         }
         [TearDown]
         public void TearDown()
