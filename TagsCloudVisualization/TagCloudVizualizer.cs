@@ -12,12 +12,12 @@ namespace TagsCloudVisualization
         private const int FrameSize = 30;
         private ImageComponents components;
         private string filename = "TagCloud.jpg";
-        public TagCloudVizualizer(ImageComponents components)
+        public TagCloudVizualizer(ImageComponents components)       //TODO RV(atolstov): здесь ведь можно принимать параметры для отрисовки!
         {
             this.components = components;
         }
 
-        public void Vizualize()
+        public void Vizualize()                        //TODO RV(atolstov): зачем принимать ImageComponents в конструкторе, а не в методе Visualize
         {
             var bitmap = new Bitmap(components.Size.Width+FrameSize, components.Size.Height+FrameSize);
             var gr = Graphics.FromImage(bitmap);

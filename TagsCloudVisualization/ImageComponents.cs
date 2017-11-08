@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TagsCloudVisualization
 {
-    class ImageComponents
+    class ImageComponents           //TODO RV(atolstov): возможно стоит вычислять размер прямо здесь? И RectanglesRender вообще не нужен. И назвать как-нибудь вроже `RectanglesCloud`
     {
         public Size Size{get; set; }
         public List<Rectangle> Items { get; set; }

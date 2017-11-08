@@ -5,12 +5,12 @@ using NUnit.Framework.Internal.Execution;
 
 namespace TagsCloudVisualization.Geometry
 {
-    class RectanglesRender
-    {
+    class RectanglesRender                      
+    {                                      
         public static ImageComponents Render(List<Rectangle> rectangles, Point center) =>
             new ImageComponents(CalculateSize(rectangles), rectangles, center);
 
-        internal static Size CalculateSize(List<Rectangle> rectangles)
+        internal static Size CalculateSize(List<Rectangle> rectangles)  //TODO RV(atolstov): Зачем internal?
         {
             if(rectangles.Count==0)
                 return new Size(0,0);

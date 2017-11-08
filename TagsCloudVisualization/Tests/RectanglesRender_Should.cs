@@ -11,7 +11,7 @@ namespace TagsCloudVisualization.Tests
     class RectanglesRender_Should
     {
         [Test]
-        public void EmptyRectanglesAndZeroSize_WhenNoRectangles()
+        public void EmptyRectanglesAndZeroSize_WhenNoRectangles()  
         {
             var rectangles = new List<Rectangle>();
             var expectedImageComp = new ImageComponents(new Size(0, 0), rectangles, new Point(0,0));

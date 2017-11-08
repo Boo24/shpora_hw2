@@ -15,9 +15,9 @@ namespace TagsCloudVisualization
         private const double StepTheta = 0.1;
         private Point center;
 
-        public Spiral(Point center) =>
-            this.center = center;
-        public IEnumerator<PointF> GetSriral()
+        public Spiral(Point center) =>                  //TODO RV(atolstov): Почему бы не дать возможность растягивать спираль по горизонтали и вертикали
+            this.center = center;                       //TODO RV(atolstov): Либо пиши однострочную функцию в одну строку, либо пиши обычную
+        public IEnumerator<PointF> GetSriral()          //TODO RV(atolstov): Spiral.GetSpiral? Название вводит в заблуждение
         {
             yield return center;
             var theta = 0.0;
