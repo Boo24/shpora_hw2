@@ -18,9 +18,8 @@ namespace TagsCloudVisualization
         [TestCase(20, 20, TestName = "Center is positive coordinates")]
         public void ReturnPointEqualsCenter_WhenGetFirstPoint(int x, int y)
         {
-            var spiral = new Spiral(new Point(x, y)).GetSriral();
-            spiral.MoveNext();
-            spiral.Current.Should().Be(new PointF(x, y));
+            var spiral = new Spiral(new Point(x, y));
+            spiral.GetNextPoint().Should().Be(new PointF(x, y));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,23 +14,38 @@ namespace TagsCloudVisualization
         private const double GrowthRate = 1;
         private const double DistBetweenCoils = 1;
         private const double StepTheta = 0.1;
-        private Point center;
+        private readonly double strainOnX;
+        private readonly double strainOnY;
+        private IEnumerator<PointF> points;
+        public Point Center { get; }
 
-        public Spiral(Point center) =>                  //TODO RV(atolstov): Почему бы не дать возможность растягивать спираль по горизонтали и вертикали
-            this.center = center;                       //TODO RV(atolstov): Либо пиши однострочную функцию в одну строку, либо пиши обычную
-        public IEnumerator<PointF> GetSriral()          //TODO RV(atolstov): Spiral.GetSpiral? Название вводит в заблуждение
+        public Spiral(Point center, double strainOnX=1, double strainOnY=1)
         {
-            yield return center;
+            Center = center;
+            this.strainOnX = strainOnX;
+            this.strainOnY = strainOnY;
+            points = GetPoints();
+        }
+
+        private IEnumerator<PointF> GetPoints()    //TODO RV(atolstov): Spiral.GetSpiral? Название вводит в заблуждение
+        {
+            yield return Center;
             var theta = 0.0;
             while (true)
             {
                 theta += StepTheta;
                 var angle = 0.1 * theta;
-                var x = (float)((DistBetweenCoils + GrowthRate * angle) * Math.Cos(angle) + center.X);
-                var y = (float)((DistBetweenCoils + GrowthRate * angle) * Math.Sin(angle) + center.Y);
+                var x = (float)(((DistBetweenCoils + GrowthRate * angle) * Math.Cos(angle) + Center.X) * strainOnX);
+                var y = (float)(((DistBetweenCoils + GrowthRate * angle) * Math.Sin(angle) + Center.Y) * strainOnY);
                 yield return new PointF(x, y);
             }
         }
 
+        public PointF GetNextPoint()
+        {
+            points.MoveNext();
+            return points.Current;
+        }
+       
     }
 }

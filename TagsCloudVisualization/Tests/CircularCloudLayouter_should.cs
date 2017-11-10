@@ -4,12 +4,10 @@ using System.Data.SqlTypes;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using TagsCloudVisualization.Geometry;
+using TagsCloudVisualization;
 
 namespace TagsCloudVisualization
 {
@@ -47,7 +45,7 @@ namespace TagsCloudVisualization
             layouter.PutNextRectangle(new Size(30, 30));
             layouter.PutNextRectangle(new Size(20, 40));
             var expectedRadius = 30;
-            foreach (var rect in layouter.Items)
+            foreach (var rect in layouter.Rectangles)
             {
                 var actualRadius =
                     Math.Sqrt(Math.Pow(layouter.Center.X - rect.X, 2) + Math.Pow(layouter.Center.Y - rect.Y, 2));
@@ -61,20 +59,23 @@ namespace TagsCloudVisualization
             var rnd = new Random();
             for (var i = 0; i <= 2000; i++)
                 layouter.PutNextRectangle(new Size(20, 10));
-            var imageComp = RectanglesRender.Render(layouter.Items.ToList(), layouter.Center);
+            var imageComp = new ImageComponents(layouter.Rectangles.ToList(), layouter.Center);
             var totalArea = Math.Pow(imageComp.Size.Height, 2) * Math.PI/4;
-            var filledArea = imageComp.Items.Select(x => x.Size.Height * x.Size.Width).Sum();
+            var filledArea = imageComp.Rectangles.Select(x => x.Size.Height * x.Size.Width).Sum();
             var percentageOfFill = filledArea / totalArea*100;
-            (percentageOfFill).Should().BeGreaterOrEqualTo(80);
+            
+
+            (percentageOfFill).Should().BeGreaterOrEqualTo(70);
+
         }
         [TearDown]
         public void TearDown()
         {
             if (Equals(TestContext.CurrentContext.Result.Outcome, ResultState.Failure))
             {
-                var imageComp = RectanglesRender.Render(layouter.Items.ToList(), layouter.Center);
-                var d = new TagCloudVizualizer(imageComp);
-                d.Vizualize();
+                var imageComp = new ImageComponents(layouter.Rectangles.ToList(), layouter.Center);
+                var d = new TagCloudVizualizer(Color.Aquamarine, Brushes.CornflowerBlue, Color.Black);
+                d.Vizualize(imageComp);
             }
         }
 

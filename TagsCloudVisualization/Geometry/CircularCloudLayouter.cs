@@ -11,47 +11,37 @@ namespace TagsCloudVisualization
     public class CircularCloudLayouter
     {
         public readonly Point Center;
-        private const int StepToCenterCount = 10;
-        public LinkedList<Rectangle> Items { get; }     //TODO RV(atolstov): Наверное все же Rectangles
-        private readonly IEnumerator<PointF> spiral;
+        private const int StepToCenterCount = 30;
+        public LinkedList<Rectangle> Rectangles { get; }     //TODO RV(atolstov): Наверное все же Rectangles
+        private readonly Spiral spiral;
         public CircularCloudLayouter(Point center)
         {
             Center = center;
-            Items = new LinkedList<Rectangle>();
-            spiral = new Spiral(center).GetSriral();
-            spiral.MoveNext();
+            Rectangles = new LinkedList<Rectangle>();
+            spiral = new Spiral(center);
         }
-        public Rectangle PutNextRectangle(Size rectangleSize) =>
-             FindFreeRectangle(rectangleSize);
+        public Rectangle PutNextRectangle(Size rectangleSize) => FindFreeRectangle(rectangleSize);
+
         internal Rectangle FindFreeRectangle(Size size)
         {
-            while(true)             //TODO RV(atolstov): а это нельзя переписать с циклом foreach и методами LINQ?
+            while (true)             //TODO RV(atolstov): а это нельзя переписать с циклом foreach и методами LINQ?
             {
-                var point = spiral.Current;
-                var foundRectangle = new Rectangle((int)point.X,(int)point.Y, size.Width, size.Height);
+                var point = spiral.GetNextPoint();
+                var foundRectangle = new Rectangle((int)point.X, (int)point.Y, size.Width, size.Height);
                 if (!CheckIntersectionWithExistigRectangles(foundRectangle))
                 {
                     foundRectangle = MoveRectangleToCenter(foundRectangle); //если закоментить эту строчку, то время раобты увеличится в разы
-                    Items.AddLast(foundRectangle);
+                    Rectangles.AddLast(foundRectangle);
                     return foundRectangle;
                 }
-                spiral.MoveNext();
             }
         }
 
         internal bool CheckIntersectionWithExistigRectangles(Rectangle rect)
         {
-            if (Items.Count == 0)
-                return false;
-            var stepCount = 0;
-            var elem = Items.Last;          //TODO RV(atolstov): elem - ужасное название
-            while (stepCount!=Items.Count)  //TODO RV(atolstov): А это нельзя переписать на цикл for / foreach?
-            {
-                if (elem.Value.IntersectsWith(rect))
+            for (var currRect = Rectangles.Last; currRect != null; currRect = currRect.Previous)//TODO RV(atolstov): А это нельзя переписать на цикл for / foreach?
+                if (currRect.Value.IntersectsWith(rect))
                     return true;
-                elem = elem.Previous;
-                stepCount += 1;
-            }
             return false;
         }
 
@@ -62,7 +52,7 @@ namespace TagsCloudVisualization
             var curX = lastGoodX = rect.X;
             var curY = lastGoodY = rect.Y;
             var stepCount = 0;
-            while ((curX != Center.X && curY != Center.Y || stepCount==StepToCenterCount))  //TODO RV(atolstov): Возможно должно быть `&& stepCount!=StepToCenterCount`. Или я неправильно понимаю твою логику?
+            while (curX != Center.X && curY != Center.Y && stepCount != StepToCenterCount)  //TODO RV(atolstov): Возможно должно быть `&& stepCount!=StepToCenterCount`. Или я неправильно понимаю твою логику?
             {
                 curX = MoveCoordinateToCenter(curX, Center.X);
                 curY = MoveCoordinateToCenter(curY, Center.Y);
