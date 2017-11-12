@@ -21,7 +21,7 @@ namespace TagsCloudVisualization
             this.rectangleBordersColor = rectangleBordersColor;
         }
 
-        public void Vizualize(ImageComponents components)   //TODO RV(atolstov): почему бы тебе просто не возвращать битмап? Вдруг кто-то захочит отриовать его на WinForm-ах        
+        public Bitmap Vizualize(RectanglesCloud components)   //TODO RV(atolstov): почему бы тебе просто не возвращать битмап? Вдруг кто-то захочит отриовать его на WinForm-ах        
         {
             var bitmap = new Bitmap(components.Size.Width+FrameSize, components.Size.Height+FrameSize);
             var gr = Graphics.FromImage(bitmap);
@@ -33,6 +33,7 @@ namespace TagsCloudVisualization
                 gr.DrawRectangle(new Pen(rectangleBordersColor), rect);
             }
             bitmap.Save(filename);
+            return bitmap;
         }
     }
 }

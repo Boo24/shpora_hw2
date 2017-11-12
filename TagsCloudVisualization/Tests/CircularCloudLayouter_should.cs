@@ -15,40 +15,28 @@ namespace TagsCloudVisualization
     internal class CircularCloudLayouter_Should
     {
         private CircularCloudLayouter layouter;
-
+        private Point center;
 
         [SetUp]
         public void SetUp()
         {
-            layouter = new CircularCloudLayouter(new Point(300, 300));
+            center = new Point(300,300);
+            layouter = new CircularCloudLayouter(center);
             layouter.PutNextRectangle(new Size(20, 10));
             layouter.PutNextRectangle(new Size(20, 10));
         }
 
-        [TestCase(0, 0, 10, 20, ExpectedResult = false, TestName = "Add in left-up")]
-        [TestCase(330, 14, 10, 20, ExpectedResult = false, TestName = "Add in down")]
-        [TestCase(370, 300, 10, 20, ExpectedResult = false, TestName = "Add in rigt")]
-        public bool NotIntersection_WhenAddRectangeInFreeSpace(int x, int y, int width, int height)
-        {
-            return layouter.CheckIntersectionWithExistigRectangles(new Rectangle(x, y, width, height));
-        }
 
-        [TestCase(300, 300, 10, 20, ExpectedResult = true, TestName = "Add in center")]
-        [TestCase(310, 300, 10, 20, ExpectedResult = true, TestName = "Add in another rectangle Space")]
-        public bool ExistIntersection_WhenAddRectangeInOccupiedSpace(int x, int y, int width, int height)
-        {
-            return layouter.CheckIntersectionWithExistigRectangles(new Rectangle(x, y, width, height));
-        }
         [Test]
         public void СheckThatStylingIsInTheFormOfCircle()
         {
             layouter.PutNextRectangle(new Size(30, 30));
             layouter.PutNextRectangle(new Size(20, 40));
             var expectedRadius = 30;
-            foreach (var rect in layouter.Rectangles)
+            foreach (var rect in layouter.RectCloud.Rectangles)
             {
                 var actualRadius =
-                    Math.Sqrt(Math.Pow(layouter.Center.X - rect.X, 2) + Math.Pow(layouter.Center.Y - rect.Y, 2));
+                    Math.Sqrt(Math.Pow(center.X - rect.X, 2) + Math.Pow(center.Y - rect.Y, 2));
                 actualRadius.Should().BeLessOrEqualTo(expectedRadius);
             }
         }
@@ -59,7 +47,7 @@ namespace TagsCloudVisualization
             var rnd = new Random();
             for (var i = 0; i <= 2000; i++)
                 layouter.PutNextRectangle(new Size(20, 10));
-            var imageComp = new ImageComponents(layouter.Rectangles.ToList(), layouter.Center);
+            var imageComp = layouter.RectCloud;
             var totalArea = Math.Pow(imageComp.Size.Height, 2) * Math.PI/4;
             var filledArea = imageComp.Rectangles.Select(x => x.Size.Height * x.Size.Width).Sum();
             var percentageOfFill = filledArea / totalArea*100;
@@ -73,7 +61,7 @@ namespace TagsCloudVisualization
         {
             if (Equals(TestContext.CurrentContext.Result.Outcome, ResultState.Failure))
             {
-                var imageComp = new ImageComponents(layouter.Rectangles.ToList(), layouter.Center);
+                var imageComp = new RectanglesCloud(center);
                 var d = new TagCloudVizualizer(Color.Aquamarine, Brushes.CornflowerBlue, Color.Black);
                 d.Vizualize(imageComp);
             }
