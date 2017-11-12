@@ -27,7 +27,7 @@ namespace TagsCloudVisualization
             points = GetPoints();
         }
 
-        private IEnumerator<PointF> GetPoints()    //TODO RV(atolstov): Spiral.GetSpiral? Название вводит в заблуждение
+        private IEnumerator<PointF> GetPoints()    
         {
             yield return Center;
             var theta = 0.0;

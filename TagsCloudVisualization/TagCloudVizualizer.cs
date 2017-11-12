@@ -14,14 +14,14 @@ namespace TagsCloudVisualization
         private readonly Color backgroundColor;
         private readonly Brush brushForRectangles;
         private readonly Color rectangleBordersColor;
-        public TagCloudVizualizer(Color backgroundColor, Brush brushForRectangles, Color rectangleBordersColor)       //TODO RV(atolstov): здесь ведь можно принимать параметры для отрисовки!
+        public TagCloudVizualizer(Color backgroundColor, Brush brushForRectangles, Color rectangleBordersColor)       
         {
             this.backgroundColor = backgroundColor;
             this.brushForRectangles = brushForRectangles;
             this.rectangleBordersColor = rectangleBordersColor;
         }
 
-        public void Vizualize(ImageComponents components)                        //TODO RV(atolstov): зачем принимать ImageComponents в конструкторе, а не в методе Visualize
+        public void Vizualize(ImageComponents components)   //TODO RV(atolstov): почему бы тебе просто не возвращать битмап? Вдруг кто-то захочит отриовать его на WinForm-ах        
         {
             var bitmap = new Bitmap(components.Size.Width+FrameSize, components.Size.Height+FrameSize);
             var gr = Graphics.FromImage(bitmap);

@@ -12,9 +12,9 @@ namespace TagsCloudVisualization
     {
         public readonly Point Center;
         private const int StepToCenterCount = 30;
-        public LinkedList<Rectangle> Rectangles { get; }     //TODO RV(atolstov): Наверное все же Rectangles
+        public LinkedList<Rectangle> Rectangles { get; }     
         private readonly Spiral spiral;
-        public CircularCloudLayouter(Point center)
+        public CircularCloudLayouter(Point center)  //TODO RV(atolstov): зачем ты даешь возможность настроить спираль, но не даешь возможности использовать ее при формировании облака?
         {
             Center = center;
             Rectangles = new LinkedList<Rectangle>();
@@ -24,7 +24,7 @@ namespace TagsCloudVisualization
 
         internal Rectangle FindFreeRectangle(Size size)
         {
-            while (true)             //TODO RV(atolstov): а это нельзя переписать с циклом foreach и методами LINQ?
+            while (true)             
             {
                 var point = spiral.GetNextPoint();
                 var foundRectangle = new Rectangle((int)point.X, (int)point.Y, size.Width, size.Height);
@@ -39,7 +39,7 @@ namespace TagsCloudVisualization
 
         internal bool CheckIntersectionWithExistigRectangles(Rectangle rect)
         {
-            for (var currRect = Rectangles.Last; currRect != null; currRect = currRect.Previous)//TODO RV(atolstov): А это нельзя переписать на цикл for / foreach?
+            for (var currRect = Rectangles.Last; currRect != null; currRect = currRect.Previous)
                 if (currRect.Value.IntersectsWith(rect))
                     return true;
             return false;
@@ -52,7 +52,7 @@ namespace TagsCloudVisualization
             var curX = lastGoodX = rect.X;
             var curY = lastGoodY = rect.Y;
             var stepCount = 0;
-            while (curX != Center.X && curY != Center.Y && stepCount != StepToCenterCount)  //TODO RV(atolstov): Возможно должно быть `&& stepCount!=StepToCenterCount`. Или я неправильно понимаю твою логику?
+            while (curX != Center.X && curY != Center.Y && stepCount != StepToCenterCount)  
             {
                 curX = MoveCoordinateToCenter(curX, Center.X);
                 curY = MoveCoordinateToCenter(curY, Center.Y);

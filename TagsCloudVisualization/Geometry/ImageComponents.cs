@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace TagsCloudVisualization
 {
-    class ImageComponents           //TODO RV(atolstov): возможно стоит вычислять размер прямо здесь? И RectanglesRender вообще не нужен. И назвать как-нибудь вроже `RectanglesCloud`
+    class ImageComponents           
     {
-        public Size Size{get; set; }
+        public Size Size{get; set; }	//TODO RV(atolstov): Почему сеттеры публичные?
         public List<Rectangle> Rectangles { get; set; }
         public Point Center { get; set; }
         public ImageComponents(List<Rectangle> rects, Point center)
@@ -18,7 +18,7 @@ namespace TagsCloudVisualization
             Center = center;
             CalculateSize();
         }
-        private void CalculateSize()  //TODO RV(atolstov): Зачем internal?
+        private void CalculateSize()  //TODO RV(atolstov): попробуй сделать Rectangles приватным, и тогда тв сможешь контролировать добавление нового прямоуголника => сможешь вычислять Size "на лету"
         {
             if (Rectangles.Count == 0)
             {
